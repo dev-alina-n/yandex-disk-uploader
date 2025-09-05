@@ -1,46 +1,123 @@
-# Getting Started with Create React App
+# Яндекс Диск Загрузчик
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+SPA приложение для загрузки файлов на Яндекс Диск, созданное с использованием React, TypeScript и CSS Modules.
 
-## Available Scripts
+## Возможности
 
-In the project directory, you can run:
+- ✅ Загрузка файлов на Яндекс Диск через API
+- ✅ Переименование файлов перед загрузкой
+- ✅ Обработка конфликтов имен файлов с опцией перезаписи
+- ✅ Отображение информации о файле (размер, тип, имя)
+- ✅ User-friendly форматирование размера файла (KB, MB, GB)
+- ✅ Валидация состояний формы
+- ✅ Обработка всех ошибок API
+- ✅ Ссылка для скачивания после успешной загрузки
+- ✅ SOLID принципы в архитектуре
+- ✅ Безопасное хранение токена в переменных окружения
 
-### `npm start`
+## Технологии
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React 18
+- TypeScript
+- CSS Modules
+- Axios для HTTP запросов
+- Яндекс Диск API
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Установка и запуск
 
-### `npm test`
+1. Клонируйте репозиторий:
+```bash
+git clone <repository-url>
+cd yandex-disk-uploader
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Установите зависимости:
+```bash
+npm install
+```
 
-### `npm run build`
+3. Настройте переменные окружения:
+```bash
+cp .env.example .env
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Отредактируйте файл `.env` и добавьте ваш OAuth токен:
+```bash
+REACT_APP_YANDEX_DISK_TOKEN=your_yandex_disk_token_here
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. Запустите приложение:
+```bash
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+6. Откройте [http://localhost:3000](http://localhost:3000) в браузере
 
-### `npm run eject`
+## Получение токена авторизации
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Для работы с Яндекс Диск API необходим OAuth токен:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Перейдите в [Яндекс OAuth](https://oauth.yandex.ru/)
+2. Создайте приложение
+3. Установите Redirect URI: `https://oauth.yandex.ru/verification_code`
+4. Получите Client ID из свойств приложения
+5. Перейдите по ссылке: `https://oauth.yandex.ru/authorize?response_type=token&client_id=<ваш_client_id>`
+6. Нажмите "Разрешить" и скопируйте токен из URL
+7. Добавьте токен в файл `.env`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Архитектура
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Приложение следует принципам SOLID:
 
-## Learn More
+- **Single Responsibility**: Каждый сервис отвечает за одну задачу
+- **Open/Closed**: Легко расширяется новыми типами авторизации
+- **Liskov Substitution**: Интерфейсы позволяют заменять реализации
+- **Interface Segregation**: Интерфейсы разделены по функциональности
+- **Dependency Inversion**: Зависимости инвертированы через интерфейсы
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Структура проекта
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+src/
+├── components/          # React компоненты
+├── services/           # Бизнес-логика (API, авторизация)
+├── types/              # TypeScript типы
+├── utils/              # Утилиты (форматирование, валидация)
+└── App.tsx            # Главный компонент
+```
+
+## API Обработка ошибок
+
+Приложение обрабатывает все основные ошибки Яндекс Диск API:
+
+- 401 - Неавторизованный доступ
+- 403 - Доступ запрещен
+- 404 - Ресурс не найден
+- 409 - Файл уже существует
+- 413 - Файл слишком большой
+- 507 - Недостаточно места на диске
+- Сетевые ошибки
+- Ошибки валидации
+
+## Использование
+
+1. Выберите файл для загрузки
+2. При необходимости измените имя файла
+3. Нажмите "Загрузить файл"
+4. При конфликте имен выберите перезапись
+5. После загрузки получите ссылку для скачивания
+
+## Безопасность
+
+- Токен авторизации хранится в переменных окружения
+- Файл `.env` исключен из git репозитория
+- Используется `.env.example` для настройки
+
+## Разработка
+
+Для разработки используйте:
+
+```bash
+npm start          # Запуск в режиме разработки
+npm run build      # Сборка для продакшена
+```
